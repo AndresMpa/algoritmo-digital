@@ -6,7 +6,7 @@ def main():
     #print(f"datos ingresados por el usarios \n\n{minterminos}\n\n")
     minterminos = normalizar_datos(minterminos)
     #print(f"datos normalizados \n\n{minterminos}\n\n")
-    minterminos_binario = representacion_binaria(minterminos)
+    minterminos_binario = representacion_binaria(minterminos,4)
     #print(f"representacion binaria \n\n{minterminos_binario}\n\n")
     datos_agrupados = agrupar(minterminos_binario)
     #print(f"datos agrupados \n\n{datos_agrupados}\n\n")
@@ -18,12 +18,22 @@ def main():
         print("este sistema no se puede minimizar")
     else:
         implicantes = segunda_agrupacion(combinaciones)
-        print(f"combinados {implicantes}\n\n")
+        #print(f"combinados {implicantes}\n\n")
         marcados = primeros_implicantes(combinaciones,implicantes)
         #print(f"implicantes {marcados}\n\n")
+        #se hace porque marcados esta funcionando como puntero
         limpiar_implicantes(implicantes,marcados)
-        print(f"implicantes filtrados {marcados}")
-        #nota esto se hace como caso particular para ver un error ignorar esta linea esta WIP
+        #print(f"implicantes filtrados {marcados}")
+        expresion=""
+        for implicante in implicantes:
+            e = generar_expresion(implicante[1])
+            expresion = expresion + e +" + "
+        for elemento in marcados:
+            e = generar_expresion(elemento[1])
+            expresion = expresion + e +" + "
+        print(expresion)
+
+        
         
 
 #determina cuantos elementos hay diferentes en cada string
@@ -81,22 +91,22 @@ def combinaciones_implicantes(datos):
     return list(set(salida))
 
 #se usa para que todas las cadenas de bits tengan 8bits
-def normalizar_cadena_bits(cadena_bits):
+def normalizar_cadena_bits(cadena_bits,n_bits):
     salida=None
-    if len(cadena_bits) < 8:
-        sumar = 8-len(cadena_bits)
+    if len(cadena_bits) < n_bits:
+        sumar = n_bits-len(cadena_bits)
         salida = ("0"*sumar)+cadena_bits
-    elif len(cadena_bits) == 8:
+    elif len(cadena_bits) == n_bits:
         salida = cadena_bits
     return salida
         
-def representacion_binaria(minterminos):
+def representacion_binaria(minterminos,n_bits):
     salida = {}
     for mintermino in minterminos:
         #se toma desde la pos 2 , porque el formato original es "0b001"
         #por tanto tomandolo desde el 2 se tiene solo la cadena de bits
         aux = bin(mintermino)[2:]
-        aux = normalizar_cadena_bits(aux)
+        aux = normalizar_cadena_bits(aux,n_bits)
         salida[str(mintermino)] = aux 
     return salida
 
@@ -134,7 +144,49 @@ def limpiar_implicantes(implicantes,datos):
         for implicante in implicantes:
             comb = combinaciones_implicantes(implicante[0])
             if dato[0] in comb or dato[0] in implicante[0]:
-                datos.remove(dato)
+                try:
+                    datos.remove(dato)
+                except:
+                    pass
+
+def generar_expresion(cadena_bits):
+    salida=""
+    i = 0
+    for bit in cadena_bits:
+        if bit != "-":
+            aux = determinar_negacion(bit)
+            if aux:
+                salida = salida+"~"
+            salida = salida+deteminar_letra(i)
+        i = i + 1
+    return salida
+
+def determinar_negacion(bit):
+    if bit == "0":
+        return True
+    else:
+        return False
+
+def deteminar_letra(pos):
+    salida = None
+    if pos == 0:
+        salida = "A"
+    elif pos == 1:
+        salida = "B"
+    elif pos == 2:
+        salida = "C"
+    elif pos == 3:
+        salida = "D"
+    elif pos == 4:
+        salida = "E"
+    elif pos == 5:
+        salida = "F"
+    elif pos == 6:
+        salida = "G"
+    elif pos == 7:
+        salida = "H"
+    return salida
+
 
 def normalizar_datos(minterminos):
     aux = minterminos.strip()
