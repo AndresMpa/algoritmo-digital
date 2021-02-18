@@ -12,7 +12,8 @@ def main():
     if combinaciones == []:
         print("este sistema no se puede minimizar")
     else:
-        primeros_implicantes(combinaciones)
+        print(combinaciones)
+        #primeros_implicantes(combinaciones)
 
 #determina cuantos elementos hay diferentes en cada string
 def distancia_hamming(dato1,dato2):
@@ -37,20 +38,22 @@ def combinar(datos_agrupados):
         for elemento_inicial in datos_agrupados[i]:
             #para cada elemento al grupo a evaluar
             #toma cada elemento del grupo siguiente al que se esta evaluando
-            for elemento_grupo_siguiente in datos_agrupados[i+1]:
-                distancia,combinacion = distancia_hamming(elemento_grupo_inicial[0],elemento_grupo_siguiente[0])
+            for elemento_siguiente in datos_agrupados[i+1]:
+                distancia,combinacion = distancia_hamming(elemento_inicial[0],elemento_siguiente[0])
                 if distancia == 1:
-                    dato = ((elemento_grupo_inicial[1],elemento_grupo_siguiente[1]),combinacion)
+                    dato = ((elemento_inicial[1],elemento_siguiente[1]),combinacion)
                     salida.append(dato)
         i = i + 1 
     return salida
 
 #se usa para que todas las cadenas de bits tengan 8bits
-def normalizar_cadena_bits():
+def normalizar_cadena_bits(cadena_bits):
     salida=None
     if len(cadena_bits) < 8:
         sumar = 8-len(cadena_bits)
         salida = ("0"*sumar)+cadena_bits
+    elif len(cadena_bits) == 8:
+        salida = cadena_bits
     return salida
         
 def representacion_binaria(minterminos):
