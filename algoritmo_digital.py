@@ -1,3 +1,7 @@
+#IMPORTANTE:
+# para debuggear y ver a detalle el programa
+# descomentar las siguientes lineas
+# 10,12,18,20,22,29,31,34
 def main():
     print('''hola bienvenido al algoritmo de reduccion de McCluskey")
     para que funcione debe ingresar los minterminos de la siguiente manera
@@ -6,6 +10,10 @@ def main():
     #print(f"datos ingresados por el usarios \n\n{minterminos}\n\n")
     minterminos = normalizar_datos(minterminos)
     #print(f"datos normalizados \n\n{minterminos}\n\n")
+    #el numero que se pasa como segundo parametro hace referencia a cadenas de 
+    #cuantos bits se van a tomar, el sistema funciona para cadenas <= 8 
+    #tener en cuenta entonces el numero maximo ingresado y sobre su representacion binaria
+    #trabajar este numero
     minterminos_binario = representacion_binaria(minterminos,4)
     #print(f"representacion binaria \n\n{minterminos_binario}\n\n")
     datos_agrupados = agrupar(minterminos_binario)
