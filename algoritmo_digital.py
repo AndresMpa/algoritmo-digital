@@ -67,34 +67,14 @@ def representacion_binaria(minterminos):
     return salida
     
 def agrupar(minterminos):
-    clave_base = "grupo"
-    salida = {}
+    salida = [[],[],[],[],[],[],[],[],[]]
     for key in minterminos.keys():
         identificador_grupo = minterminos[key].count("1")
-        clave = clave_base+str(identificador_grupo)
-        #valida si el grupo ya existe
-        if clave in salida.keys():
-            dato = (minterminos[key],key)
-            salida[clave].append(dato)
-        else:
-            salida[clave] = []
-            dato = (minterminos[key],key)
-            salida[clave].append(dato)
-    #se hace esto porque la estructura original de los grupos 
-    #era un diccionario con claves segun el nombre del grupo
-    #esto lo volvia muy complicado de recorrer al momento de combinar
-    #por ese se opto por convertirlo en una lista que contiene los grupos
-    #algo similar a esto 
-    #[[(1,'00000001'),(2,'00000001')],[(9,'00001001'),(10,'00001010')]]
-    salida = aplanar_grupos(salida)
+        dato = (minterminos[key],key)
+        salida[identificador_grupo].append(dato)
+    print(salida)
     return salida
 
-#se usa para recorrer de manera mas sencilla el arreglo de grupos
-def aplanar_grupos(minterminos):
-    salida = []
-    for key in minterminos.keys():
-        salida.append(minterminos[key])
-    return salida
 
 def normalizar_datos(minterminos):
     aux = minterminos.strip()
