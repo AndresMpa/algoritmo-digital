@@ -3,15 +3,15 @@ def main():
     para que funcione debe ingresar los minterminos de la siguiente manera
     ej: 15,16,17,8,10,20''')
     minterminos = input("ingrese los minterminos: ")
-    print(f"datos ingresados por el usarios \n\n{minterminos}\n\n")
+    #print(f"datos ingresados por el usarios \n\n{minterminos}\n\n")
     minterminos = normalizar_datos(minterminos)
-    print(f"datos normalizados \n\n{minterminos}\n\n")
+    #print(f"datos normalizados \n\n{minterminos}\n\n")
     minterminos_binario = representacion_binaria(minterminos)
-    print(f"representacion binaria \n\n{minterminos_binario}\n\n")
+    #print(f"representacion binaria \n\n{minterminos_binario}\n\n")
     datos_agrupados = agrupar(minterminos_binario)
-    print(f"datos agrupados \n\n{datos_agrupados}\n\n")
+    #print(f"datos agrupados \n\n{datos_agrupados}\n\n")
     combinaciones = combinar(datos_agrupados)
-    print(f"datos combinados \n\n{combinaciones}\n\n")
+    #print(f"datos combinados \n\n{combinaciones}\n\n")
     #esto es el caso de que no exista primeras combinaciones
     #no se que se hacer en dicho caso , asumo que no se podra reducir el sistema
     if combinaciones == []:
@@ -19,13 +19,12 @@ def main():
     else:
         implicantes = segunda_agrupacion(combinaciones)
         print(f"combinados {implicantes}\n\n")
-        a = primeros_implicantes(combinaciones,implicantes)
-        print(f"implicantes filtrados {a}")
+        marcados = primeros_implicantes(combinaciones,implicantes)
+        #print(f"implicantes {marcados}\n\n")
+        limpiar_implicantes(implicantes,marcados)
+        print(f"implicantes filtrados {marcados}")
         #nota esto se hace como caso particular para ver un error ignorar esta linea esta WIP
-        try:
-            a.remove((('10', '11'), '0000101-'))
-        except:
-            pass
+        
 
 #determina cuantos elementos hay diferentes en cada string
 def distancia_hamming(dato1,dato2):
@@ -68,8 +67,6 @@ def primeros_implicantes(datos_agrupados,implicantes):
                     aux.remove(dato)
                 except:
                     pass
-
-            
     return aux
     
 def combinaciones_implicantes(datos):
@@ -132,6 +129,12 @@ def agrupar(minterminos):
         salida[identificador_grupo].append(dato)
     return salida
 
+def limpiar_implicantes(implicantes,datos):
+    for dato in datos:
+        for implicante in implicantes:
+            comb = combinaciones_implicantes(implicante[0])
+            if dato[0] in comb or dato[0] in implicante[0]:
+                datos.remove(dato)
 
 def normalizar_datos(minterminos):
     aux = minterminos.strip()
